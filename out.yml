@@ -1,0 +1,66 @@
+
+Description: "Nested Stack to deploy network stack and servers stack with  each dependencies,\
+  \ more practical to run all resources. \nBy Hanan Hussein\n"
+Resources:
+  NetworkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.us-east-1.amazonaws.com/dummywebapp-cloudformation-aio/549fbea6f3e3f569aa0e31655d68f5f7.template
+      Parameters:
+        EnvironmentName: DummyWebApp
+        VpcCIDR: 10.0.0.0/16
+        PublicSubnet1CIDR: 10.0.0.0/24
+        PublicSubnet2CIDR: 10.0.1.0/24
+        PrivateSubnet1CIDR: 10.0.2.0/24
+        PrivateSubnet2CIDR: 10.0.3.0/24
+  ServerStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.us-east-1.amazonaws.com/dummywebapp-cloudformation-aio/af28f448dff02174dc2d5cc4de7789cb.template
+      Parameters:
+        EnvironmentName: DummyWebApp
+        ASGMinSize: '4'
+        ASGMaxSize: '8'
+        EC2ImageId: ami-0729e439b6769d6ab
+        EC2InstanceType: t2.micro
+        EBSVolumeSize: '10'
+        VPC:
+          Fn::GetAtt:
+          - NetworkStack
+          - Outputs.VPC
+        VPCPublicRouteTable:
+          Fn::GetAtt:
+          - NetworkStack
+          - Outputs.VPCPublicRouteTable
+        VPCPrivateRouteTable1:
+          Fn::GetAtt:
+          - NetworkStack
+          - Outputs.VPCPrivateRouteTable1
+        VPCPrivateRouteTable2:
+          Fn::GetAtt:
+          - NetworkStack
+          - Outputs.VPCPrivateRouteTable2
+        PublicSubnets:
+          Fn::GetAtt:
+          - NetworkStack
+          - Outputs.PublicSubnets
+        PrivateSubnets:
+          Fn::GetAtt:
+          - NetworkStack
+          - Outputs.PrivateSubnets
+        PublicSubnet1:
+          Fn::GetAtt:
+          - NetworkStack
+          - Outputs.PublicSubnet1
+        PublicSubnet2:
+          Fn::GetAtt:
+          - NetworkStack
+          - Outputs.PublicSubnet2
+        PrivateSubnet1:
+          Fn::GetAtt:
+          - NetworkStack
+          - Outputs.PrivateSubnet1
+        PrivateSubnet2:
+          Fn::GetAtt:
+          - NetworkStack
+          - Outputs.PrivateSubnet2

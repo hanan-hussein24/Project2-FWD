@@ -19,6 +19,10 @@ ScreenShots:
 
 
 
+![Servers-Stack-Output](https://user-images.githubusercontent.com/103249455/183248696-4965d656-ddb8-4a4f-bd72-01ca5f6b500a.png)
+
+
+
 ![Nested-Stack-Compelete](https://user-images.githubusercontent.com/103249455/183248613-1b99a4b2-8f06-4752-9f1f-1934f7b5a008.png)
 
 
